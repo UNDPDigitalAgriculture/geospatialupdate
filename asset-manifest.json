@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/geospatialupdate/static/css/main.93402771.css",
-    "main.js": "/geospatialupdate/static/js/main.ac503fa7.js",
+    "main.js": "/geospatialupdate/static/js/main.62c01733.js",
     "static/media/farm.jpg": "/geospatialupdate/static/media/farm.891bf651716dda5295dd.jpg",
     "index.html": "/geospatialupdate/index.html",
     "main.93402771.css.map": "/geospatialupdate/static/css/main.93402771.css.map",
-    "main.ac503fa7.js.map": "/geospatialupdate/static/js/main.ac503fa7.js.map"
+    "main.62c01733.js.map": "/geospatialupdate/static/js/main.62c01733.js.map"
   },
   "entrypoints": [
     "static/css/main.93402771.css",
-    "static/js/main.ac503fa7.js"
+    "static/js/main.62c01733.js"
   ]
 }
