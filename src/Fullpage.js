@@ -25,8 +25,9 @@ const Fullpage = () => (
           <div className="section header" style={{ textAlign: "center" }}>
             <h1
               style={{
-                color: "black",
+                color: "white",
                 fontSize: "44px",
+                backgroundColor: "rgba(28, 28, 28, 0.38)",
               }}>
               UNDP DIGITAL AGRICULUTURE GEOSPATIAL PLATORM
             </h1>
@@ -40,12 +41,10 @@ const Fullpage = () => (
           </div>
           <div className="section" data-anchor="section1">
             <Sidebar />
-            {/* <NewMap /> */}
             <NewMap />
           </div>
           <div className="section" data-anchor="section2">
             <Sidebar func={fullpageApi} />
-            {/* <NewMap /> */}
             <CompareMaps />
           </div>
           <div className="section" data-anchor="section3">

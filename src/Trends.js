@@ -5,7 +5,6 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import LineChart from "./lineChart";
-import { ScatterChart } from "./Scatter";
 import HBarChart from "./hBarChart";
 
 function TabPanel(props) {

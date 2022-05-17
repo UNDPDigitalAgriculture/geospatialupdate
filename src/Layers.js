@@ -18,21 +18,8 @@ import {
   Popup,
 } from "react-leaflet";
 import { initializeApp } from "firebase/app";
-import {
-  getDatabase,
-  ref,
-  onValue,
-  set,
-  setValue,
-  child,
-  push,
-  update,
-} from "firebase/database";
+import { getDatabase, ref, onValue, update } from "firebase/database";
 import { vividColors } from "./utils/colors";
-// import L from "leaflet";
-//import "@geoman-io/leaflet-geoman-free";
-//import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
-// L.PM.initialize({ optIn: true });
 
 const firebaseConfig = {
   apiKey: "AIzaSyANvYurLON2pl8b_XO3i3EuvYA-N4TrssM",

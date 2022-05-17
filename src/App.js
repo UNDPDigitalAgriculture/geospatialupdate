@@ -8,7 +8,7 @@ import Sidebar from "./Sidebar";
 import NewMap from "./NewMap";
 
 function App() {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("farms");
   const handleChange = (e, v) => {
     console.log(e.target.value);
     setPassword(e.target.value);

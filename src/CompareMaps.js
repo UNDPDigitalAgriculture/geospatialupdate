@@ -94,7 +94,7 @@ const CompareMaps = () => {
       ).addTo(map);
       const gjnLayer = L.geoJSON(data, {
         style: gjnStyle,
-      }).addTo(map);
+      }); //.addTo(map);
       const sidebyside = L.control.sideBySide(stamenLayer, osmLayer).addTo(map);
       //L.control.layers({ carto: cartodb }).addTo(map);
 
@@ -107,7 +107,7 @@ const CompareMaps = () => {
       style={{
         top: "0px",
         left: "30vw",
-        height: "100vh",
+        height: "500px",
         width: "70vw",
         position: "absolute",
       }}
