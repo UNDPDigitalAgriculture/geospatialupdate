@@ -1,14 +1,15 @@
 {
   "files": {
-    "main.css": "/geospatialupdate/static/css/main.93402771.css",
-    "main.js": "/geospatialupdate/static/js/main.62c01733.js",
+    "main.css": "/geospatialupdate/static/css/main.78fab778.css",
+    "main.js": "/geospatialupdate/static/js/main.da361b27.js",
     "static/media/farm.jpg": "/geospatialupdate/static/media/farm.891bf651716dda5295dd.jpg",
+    "static/media/UNDP-Logo-Blue-Large.png": "/geospatialupdate/static/media/UNDP-Logo-Blue-Large.5272ac0ce5581013da93.png",
     "index.html": "/geospatialupdate/index.html",
-    "main.93402771.css.map": "/geospatialupdate/static/css/main.93402771.css.map",
-    "main.62c01733.js.map": "/geospatialupdate/static/js/main.62c01733.js.map"
+    "main.78fab778.css.map": "/geospatialupdate/static/css/main.78fab778.css.map",
+    "main.da361b27.js.map": "/geospatialupdate/static/js/main.da361b27.js.map"
   },
   "entrypoints": [
-    "static/css/main.93402771.css",
-    "static/js/main.62c01733.js"
+    "static/css/main.78fab778.css",
+    "static/js/main.da361b27.js"
   ]
 }
