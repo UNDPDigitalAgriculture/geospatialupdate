@@ -1,5 +1,7 @@
 import React from "react";
 import { MapContainer } from "react-leaflet";
+import UploadedContext from './contexts/UploadedProvider'
+import SelectedPanel from './SelectedPanel'
 import Layers from "./Layers";
 import Legend from "./Legend";
 import DropDown from "./DropDown";
@@ -19,9 +21,9 @@ L.PM.initialize({ optIn: true });
 // })
 
 const NewMap = () => {
-  //const location = [-33.78, 24.83];
-  const location = [-29.07, 24.32];
-  const zoom = 6;
+  const location = [-34.0909, 20.7884];
+  //const location = [-29.07, 24.32];
+  const zoom = 12;
   return (
     <>
       <MapContainer
@@ -38,9 +40,12 @@ const NewMap = () => {
           width: "70vw",
           position: "absolute",
         }}>
-        <DropDown />
-        <Layers />
-        {/* <Legend /> */}
+        <UploadedContext>
+          <DropDown />
+          <Layers />
+          {/* <Legend /> */}
+          <SelectedPanel />
+        </UploadedContext>
       </MapContainer>
     </>
   );

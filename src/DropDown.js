@@ -10,9 +10,115 @@ import L from "leaflet";
 
 const DropDown = () => {
   const [age, setAge] = React.useState("");
-  const [cropFilter, setCropFilter] = React.useState();
+  const [cropFilter, setCropFilter] = React.useState('');
 
   const map = useMap();
+
+
+
+  const LegendInfo = () => {
+
+    if (cropFilter == 'all' || cropFilter == '') {
+      return (
+        <>
+          <Box
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            alignItems='center'
+            justifyContent='space-between'
+            height='20px'
+          >
+            <h4>Corn</h4>
+            <div className='color-corn'></div>
+          </Box>
+          <Box
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            alignItems='center'
+            justifyContent='space-between'
+            height='20px'
+          >
+            <h4>Wheat</h4>
+            <div className='color-wheat'></div>
+          </Box>
+          <Box
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            alignItems='center'
+            justifyContent='space-between'
+            height='20px'
+          >
+            <h4>Barley</h4>
+            <div className='color-barley'></div>
+          </Box>
+          <Box
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            alignItems='center'
+            justifyContent='space-between'
+            height='20px'
+          >
+            <h4>Rice</h4>
+            <div className='color-rice'></div>
+          </Box>
+        </>
+      )
+    } else {
+
+      return (
+        <>
+          <Box
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            alignItems='center'
+            justifyContent='space-between'
+            height='20px'
+          >
+            <h4>Great Health</h4>
+            <div className='color-greathealth'></div>
+          </Box>
+          <Box
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            alignItems='center'
+            justifyContent='space-between'
+            height='20px'
+          >
+            <h4>Good Health</h4>
+            <div className='color-goodhealth'></div>
+          </Box>
+          <Box
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            alignItems='center'
+            justifyContent='space-between'
+            height='20px'
+          >
+            <h4>Average Health</h4>
+            <div className='color-okhealth'></div>
+          </Box>
+          <Box
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            alignItems='center'
+            justifyContent='space-between'
+            height='20px'
+          >
+            <h4>Bad Health</h4>
+            <div className='color-badhealth'></div>
+          </Box>
+        </>
+      )
+    }
+  }
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -26,6 +132,7 @@ const DropDown = () => {
   };
 
   const handleFilterChange = (event) => {
+    console.log(event.target.value);
     setCropFilter(event.target.value);
     const val = event.target.value;
     //console.log(event.target.value);
@@ -37,18 +144,18 @@ const DropDown = () => {
               layer.feature["properties"].crop_type === "0"
                 ? vividColors[0]
                 : layer.feature["properties"].crop_type === "1"
-                ? vividColors[1]
-                : layer.feature["properties"].crop_type === "2"
-                ? vividColors[2]
-                : vividColors[3],
+                  ? vividColors[1]
+                  : layer.feature["properties"].crop_type === "2"
+                    ? vividColors[2]
+                    : vividColors[3],
             fillColor:
               layer.feature["properties"].crop_type === "0"
                 ? vividColors[0]
                 : layer.feature["properties"].crop_type === "1"
-                ? vividColors[1]
-                : layer.feature["properties"].crop_type === "2"
-                ? vividColors[2]
-                : vividColors[3],
+                  ? vividColors[1]
+                  : layer.feature["properties"].crop_type === "2"
+                    ? vividColors[2]
+                    : vividColors[3],
           });
         } else {
           //console.log(layer.feature["properties"][val]);
@@ -58,21 +165,21 @@ const DropDown = () => {
                 ? "#1a9641"
                 : layer.feature["properties"][val] < 40 &&
                   layer.feature["properties"][val] >= 30
-                ? "#a6d96a"
-                : layer.feature["properties"][val] < 30 &&
-                  layer.feature["properties"][val] >= 10
-                ? "#fdae61"
-                : "red",
+                  ? "#a6d96a"
+                  : layer.feature["properties"][val] < 30 &&
+                    layer.feature["properties"][val] >= 10
+                    ? "#fdae61"
+                    : "red",
             color:
               layer.feature["properties"][val] >= 40
                 ? "#1a9641"
                 : layer.feature["properties"][val] < 40 &&
                   layer.feature["properties"][val] >= 30
-                ? "#a6d96a"
-                : layer.feature["properties"][val] < 30 &&
-                  layer.feature["properties"][val] >= 10
-                ? "#fdae61"
-                : "red",
+                  ? "#a6d96a"
+                  : layer.feature["properties"][val] < 30 &&
+                    layer.feature["properties"][val] >= 10
+                    ? "#fdae61"
+                    : "red",
           });
         }
       }
@@ -90,49 +197,67 @@ const DropDown = () => {
   };
 
   return (
-    <div className="leaflet-top leaflet-left">
-      <div
-        style={{
-          //   width: "100px",
-          //   height: "50px",
-          padding: "10px",
-          backgroundColor: "whitesmoke",
-          position: "relative",
-        }}
-        className="leaflet-control leaflet-bar">
-        <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Locations</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={age}
-              label="Age"
-              onChange={handleChange}>
-              <MenuItem value={"Patensie"}>Patensie</MenuItem>
-              <MenuItem value={"Other"}>Suurbraak</MenuItem>
-              <MenuItem value={30}>Heidelberg</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Box sx={{ mt: 2, minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Farm Health</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={cropFilter}
-              label="Health"
-              onChange={handleFilterChange}>
-              <MenuItem value={"all"}>All</MenuItem>
-              <MenuItem value={"2017"}>2017</MenuItem>
-              <MenuItem value={"2018"}>2018</MenuItem>
-              <MenuItem value={"2019"}>2019</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+    <>
+      <div className="leaflet-top leaflet-left">
+        <div
+          style={{
+            //   width: "100px",
+            //   height: "50px",
+            padding: "10px",
+            backgroundColor: "whitesmoke",
+            position: "relative",
+          }}
+          className="leaflet-control leaflet-bar">
+          <Box sx={{ minWidth: 130 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Locations</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={age}
+                label="Age"
+                onChange={handleChange}>
+                <MenuItem value={"Patensie"}>Patensie</MenuItem>
+                <MenuItem value={"Other"}>Suurbraak</MenuItem>
+                <MenuItem value={30}>Heidelberg</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <Box sx={{ mt: 2, minWidth: 120 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Farm Health</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={cropFilter}
+                label="Health"
+                onChange={handleFilterChange}>
+                <MenuItem value={"all"}>All</MenuItem>
+                <MenuItem value={"2017"}>2017</MenuItem>
+                <MenuItem value={"2018"}>2018</MenuItem>
+                <MenuItem value={"2019"}>2019</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
       </div>
-    </div>
+      <div className="leaflet-bottom leaflet-left">
+        <div
+          style={{
+            width: "120px",
+            // height: "50px",
+            padding: "10px",
+            backgroundColor: "whitesmoke",
+            position: "relative",
+            fontFamily: 'Helvetica'
+          }}
+          className="leaflet-control leaflet-bar">
+          {/* <h4>Legend</h4> */}
+          <LegendInfo />
+
+        </div>
+      </div>
+    </>
   );
 };
 

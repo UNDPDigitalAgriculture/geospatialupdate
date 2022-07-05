@@ -1,12 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+
 html {
   font-family: "Nunito", sans-serif;
   background-color: whitesmoke;
 }
+
+.leaflet-container {
+  font-family: "Nunito", sans-serif;
+}
+
 .App {
   display: "flex";
   /* height: 100%; */
 }
+
 .sidebar {
   background-color: whitesmoke;
   width: 30vw;
@@ -25,6 +32,7 @@ html {
 .actions {
   list-style-type: none;
 }
+
 .actions button {
   padding: 0.93em 1.87em;
   background: #35495e;
@@ -35,6 +43,7 @@ html {
   font-size: 15px;
   cursor: pointer;
 }
+
 .actions button:hover {
   background: #fff;
   color: #35495e;
@@ -47,25 +56,33 @@ html {
   background-position: center;
 }
 
+h2 {
+  margin-bottom: 0.5;
+}
+
 .legend-item {
   font-size: 16px;
 }
+
 .legend-item:hover {
   font-weight: bold;
 }
+
 .grid2x2 {
   min-height: 100%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
 }
-.grid2x2 > div {
+
+.grid2x2>div {
   display: flex;
   flex-basis: calc(50% - 40px);
   justify-content: center;
   flex-direction: column;
 }
-.grid2x2 > div > div {
+
+.grid2x2>div>div {
   display: flex;
   justify-content: center;
   flex-direction: row;
@@ -74,6 +91,56 @@ html {
 .box {
   margin: 20px;
 }
+
+.color-corn {
+  width: 15px;
+  height: 15px;
+  background-color: #e41a1c;
+}
+
+.color-barley {
+  width: 15px;
+  height: 15px;
+  background-color: #377eb8;
+}
+
+.color-rice {
+  width: 15px;
+  height: 15px;
+  background-color: #99C945;
+}
+
+.color-wheat {
+  width: 15px;
+  height: 15px;
+  background-color: #ff7f00;
+}
+
+
+.color-greathealth {
+  width: 15px;
+  height: 15px;
+  background-color: #1a9641;
+}
+
+.color-goodhealth {
+  width: 15px;
+  height: 15px;
+  background-color: #a6d96a;
+}
+
+.color-okhealth {
+  width: 15px;
+  height: 15px;
+  background-color: #fdae61;
+}
+
+.color-badhealth {
+  width: 15px;
+  height: 15px;
+  background-color: red;
+}
+
 /* .box1 {
   background-color: red;
 }
@@ -86,3 +153,16 @@ html {
 .box4 {
   background-color: grey;
 } */
+
+#clicked-words {
+  font-family: 'Helvetica';
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+}
+
+.last-item {
+  margin-left: auto !important;
+  float: right;
+  align-items: flex-end;
+}

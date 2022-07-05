@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,6 +7,7 @@ import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import Leaflet from 'leaflet';
 import {
   useMap,
   useMapEvents,
@@ -19,7 +20,11 @@ import {
 } from "react-leaflet";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, update } from "firebase/database";
+import center from "@turf/center";
+import bbox from '@turf/bbox';
+import area from '@turf/area';
 import { vividColors } from "./utils/colors";
+import { ClickedVisContext } from "./contexts/ClickedVisProvider";
 
 const firebaseConfig = {
   apiKey: "AIzaSyANvYurLON2pl8b_XO3i3EuvYA-N4TrssM",
@@ -50,10 +55,13 @@ const Layers = () => {
   const [addedPoly, setAddedPoly] = useState();
   const [addedLayer, setAddedLayer] = useState();
   const [clickedLayer, setClickedLayer] = useState();
+  const { visible, setVisible } = useContext(ClickedVisContext)
+  const { clickedFarm, setClickedFarm } = useContext(ClickedVisContext)
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const gjnRef = useRef(null)
   const handleChange = (event) => {
     console.log(event.target.value);
     setCropType(event.target.value);
@@ -62,7 +70,7 @@ const Layers = () => {
   const map = useMapEvents({
     zoomend: () => {
       // Get the zoom level once zoom ended:
-      console.log(map.getZoom());
+      //console.log(map.getZoom());
     },
     moveend: () => {
       // Get bounds once move has ended:
@@ -99,8 +107,18 @@ const Layers = () => {
       //console.log(data);
 
       setGjnData(data);
+      console.log()
     });
   };
+
+  useEffect(() => {
+    if (gjnData) {
+      if (gjnRef.current != null) {
+        let feat = gjnRef.current;
+        map.fitBounds(feat.getBounds())
+      }
+    }
+  }, [])
 
   const addToDb = () => {
     //latlng.push(latlng[0]);
@@ -133,10 +151,10 @@ const Layers = () => {
         cropType === "0"
           ? vividColors[0]
           : cropType === "1"
-          ? vividColors[1]
-          : cropType === "2"
-          ? vividColors[2]
-          : vividColors[3],
+            ? vividColors[1]
+            : cropType === "2"
+              ? vividColors[2]
+              : vividColors[3],
     });
 
     update(ref(db), updates);
@@ -146,8 +164,12 @@ const Layers = () => {
   const updateDb = (f, updateKey) => {
     const db = getDatabase(app);
     const dbRef = ref(db, `/features/${updateKey}`);
+    console.log(updateKey);
     const newFormat = [];
-    console.log(f._latlngs);
+    console.log(f._latlngs[0].length);
+    // if (f._latlngs[0].length == 0) {
+    //   dbRef.remove()
+    // }
     f._latlngs[0].map((x) => {
       //console.log(x);
       newFormat.push([Number(x.lng.toFixed(4)), Number(x.lat.toFixed(4))]);
@@ -248,6 +270,36 @@ const Layers = () => {
     }
   };
 
+  const zoomToClickedFarm = (e) => {
+    //console.log('zoom')
+    console.log(e.target.feature.properties)
+    //console.log(area(e.target.feature.geometry.coordinates[0]))
+
+    const layer = e.target.toGeoJSON();
+    const feat = Leaflet.geoJSON(layer);
+    //console.log(feat);
+    //console.log(area(layer));
+    //console.log(e.feature)
+    console.log(area(layer));
+
+    e.target.feature.properties.area = area(layer).toFixed(2)
+    e.target.feature.properties.area.toLocaleString('en-US')
+    console.log(e.target.feature.properties)
+    console.log(feat);
+    setClickedFarm(e.target.feature.properties)
+    map.fitBounds(feat.getBounds());
+    // const bboxGjn = bbox(layer);
+    // console.log(bboxGjn);
+    // const layerCenter = center(layer);
+    // console.log(center(layer))
+    // let zoomX = layerCenter.geometry.coordinates[0]
+    // let zoomY = layerCenter.geometry.coordinates[1]
+
+    // //map.flyTo([zoomY, zoomX], 15)
+    // map.fitBounds(bboxGjn);
+
+  }
+
   return (
     <>
       <Modal
@@ -312,17 +364,19 @@ const Layers = () => {
             <LayersControl.Overlay checked name={"Corn"}>
               <GeoJSON
                 //pmIgnore
+                ref={gjnRef}
                 key={"geojsonLayer"}
                 eventHandlers={{
                   click: (e) => {
                     e.layer.setStyle({ pmIgnore: false });
                     //map.pm.enableGlobalEditMode();
                     setClickedLayer(e.layer);
+                    setVisible(true)
                     // e.layer.pm.enable({
                     //   allowSelfIntersection: false,
                     // });
                     e.layer.pm.toggleEdit();
-                    console.log(e.layer);
+                    console.log(e.layer.feature);
                   },
 
                   // mouseout: (e) => {
@@ -331,6 +385,13 @@ const Layers = () => {
                   "pm:edit": (e) => {
                     handleEditLayer(e);
                   },
+                }}
+                onEachFeature={(__, layer) => {
+                  layer.on({
+                    click: (e) => {
+                      zoomToClickedFarm(e)
+                    }
+                  })
                 }}
                 data={gjnData.filter((x) => x.properties.crop_type === "0")}
                 //onEachFeature={onEach}
@@ -347,6 +408,7 @@ const Layers = () => {
                     e.layer.setStyle({ pmIgnore: false });
                     //map.pm.enableGlobalEditMode();
                     setClickedLayer(e.layer);
+                    setVisible(true)
                     // e.layer.pm.enable({
                     //   allowSelfIntersection: false,
                     // });
@@ -360,6 +422,13 @@ const Layers = () => {
                   "pm:edit": (e) => {
                     handleEditLayer(e);
                   },
+                }}
+                onEachFeature={(__, layer) => {
+                  layer.on({
+                    click: (e) => {
+                      zoomToClickedFarm(e)
+                    }
+                  })
                 }}
                 data={gjnData.filter((x) => x.properties.crop_type === "1")}
                 //onEachFeature={onEach}
@@ -376,6 +445,7 @@ const Layers = () => {
                     e.layer.setStyle({ pmIgnore: false });
                     //map.pm.enableGlobalEditMode();
                     setClickedLayer(e.layer);
+                    setVisible(true)
                     // e.layer.pm.enable({
                     //   allowSelfIntersection: false,
                     // });
@@ -389,6 +459,13 @@ const Layers = () => {
                   "pm:edit": (e) => {
                     handleEditLayer(e);
                   },
+                }}
+                onEachFeature={(__, layer) => {
+                  layer.on({
+                    click: (e) => {
+                      zoomToClickedFarm(e)
+                    }
+                  })
                 }}
                 data={gjnData.filter((x) => x.properties.crop_type === "2")}
                 //onEachFeature={onEach}
@@ -405,6 +482,7 @@ const Layers = () => {
                     e.layer.setStyle({ pmIgnore: false });
                     //map.pm.enableGlobalEditMode();
                     setClickedLayer(e.layer);
+                    setVisible(true)
                     // e.layer.pm.enable({
                     //   allowSelfIntersection: false,
                     // });
@@ -418,6 +496,13 @@ const Layers = () => {
                   "pm:edit": (e) => {
                     handleEditLayer(e);
                   },
+                }}
+                onEachFeature={(__, layer) => {
+                  layer.on({
+                    click: (e) => {
+                      zoomToClickedFarm(e)
+                    }
+                  })
                 }}
                 data={gjnData.filter((x) => x.properties.crop_type === "3")}
                 //onEachFeature={onEach}
